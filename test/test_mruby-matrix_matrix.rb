@@ -461,6 +461,17 @@ class TestMatrix < MTest::Unit::TestCase
       assert_equal(1, s1 ** o)
     end
   end
+
+  def test_lup
+    a = Vector[2, 5]
+    m = Matrix[[1.0, 2.0], [3.0, 4.0]]
+    x = m.lup
+    assert_equal(x.l, Matrix[[1, 0], [0.3333333333333333, 1]])
+    assert_equal(x.u, Matrix[[3.0, 4.0], [0, 0.6666666666666667]])
+    assert_equal(x.p, Matrix[[0, 1], [1, 0]])
+    assert_equal(x.l * x.u, x.p * m)
+    assert_equal(m.lup.solve(a).inspect, "Vector[1, 0.5]")
+  end
 end
 
 MTest::Unit.new.run
